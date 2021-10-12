@@ -29,65 +29,77 @@ class DompetController extends Controller
     
     public function add(Request $request)
     {
-        $id = $request->get('id');
         $nama = $request->get('nama');
-        $username = $request->get('username');
+        $referensi = $request->get('referensi');
+        $deskripsi = $request->get('deskripsi');
+        $status_id = $request->get('status_id');
         
-        $data = [
-            "id" => $id,
-            "nama" => $nama,
-            "username" => $username,
-        ];
+
+        DB::table('tbl_dompet')->insert([
+            'nama' => $nama,
+            'referensi' => $referensi,
+            'deskripsi' => $deskripsi,
+            'status_id' => $status_id,
+        ]);
 
         $metacode = [
             "code" => 200,
-            "message" => "Berhasil request API!",
+            "message" => "Berhasil tambah data!",
         ];
 
         $response = [
             "meta" => $metacode,
-            "data" => $data,
         ];
-
-
-        
-        $dompet = DB::table('tbl_dompet')
-                // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
-                ->select('*')
-                ->get();
 
         return response()->json($response, 200);
         // return json_encode($data);
     }
     
-    public function edit()
+    public function edit(Request $request)
     {
-        $data = [
-            "id" => 1,
-            "nama" => "Ardelingga",
-        ];
+        $id = $request->get('id');
+        $nama = $request->get('nama');
+        $referensi = $request->get('referensi');
+        $deskripsi = $request->get('deskripsi');
+        $status_id = $request->get('status_id');
         
-        $dompet = DB::table('tbl_dompet')
-                // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
-                ->select('*')
-                ->get();
 
-        return response()->json($dompet, 200);
+        DB::table('tbl_dompet')->where('id', '=', $id)->update([
+            'nama' => $nama,
+            'referensi' => $referensi,
+            'deskripsi' => $deskripsi,
+            'status_id' => $status_id,
+        ]);
+
+        $metacode = [
+            "code" => 200,
+            "message" => "Berhasil ubah data!",
+        ];
+
+        $response = [
+            "meta" => $metacode,
+        ];
+
+        return response()->json($response, 200);
     }
     
-    public function delete()
+    public function delete(Request $request)
     {
-        $data = [
-            "id" => 1,
-            "nama" => "Ardelingga",
-        ];
+        $id = $request->get('id');
         
-        $dompet = DB::table('tbl_dompet')
-                // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
-                ->select('*')
-                ->get();
 
-        return json_encode($dompet);
+        DB::table('tbl_dompet')->where('id', '=', $id)->delete();
+
+        $metacode = [
+            "code" => 200,
+            "message" => "Berhasil delete data!",
+        ];
+
+        $response = [
+            "meta" => $metacode,
+        ];
+
+        return response()->json($response, 200);
     }
 
 }
