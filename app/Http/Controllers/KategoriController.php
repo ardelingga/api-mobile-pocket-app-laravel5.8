@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 
-class DompetController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -14,24 +14,20 @@ class DompetController extends Controller
      */
     public function index()
     {
-        $data = [
-            "id" => 1,
-            "nama" => "Ardelingga",
-        ];
         
-        $dompet = DB::table('tbl_dompet')
+        $kategori = DB::table('tbl_kategori')
                 // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
                 ->select('*')
                 ->get();
 
         $metacode = [
             "code" => 200,
-            "message" => "Berhasil get list data dompet!",
+            "message" => "Berhasil get list data kategori!",
         ];
 
         $response = [
             "meta" => $metacode,
-            "data" => $dompet,
+            "data" => $kategori,
         ];
 
         return response()->json($response, 200);
@@ -40,14 +36,12 @@ class DompetController extends Controller
     public function add(Request $request)
     {
         $nama = $request->get('nama');
-        $referensi = $request->get('referensi');
         $deskripsi = $request->get('deskripsi');
         $status_id = $request->get('status_id');
         
 
-        DB::table('tbl_dompet')->insert([
+        DB::table('tbl_kategori')->insert([
             'nama' => $nama,
-            'referensi' => $referensi,
             'deskripsi' => $deskripsi,
             'status_id' => $status_id,
         ]);
@@ -69,14 +63,12 @@ class DompetController extends Controller
     {
         $id = $request->get('id');
         $nama = $request->get('nama');
-        $referensi = $request->get('referensi');
         $deskripsi = $request->get('deskripsi');
         $status_id = $request->get('status_id');
         
 
-        DB::table('tbl_dompet')->where('id', '=', $id)->update([
+        DB::table('tbl_kategori')->where('id', '=', $id)->update([
             'nama' => $nama,
-            'referensi' => $referensi,
             'deskripsi' => $deskripsi,
             'status_id' => $status_id,
         ]);
@@ -98,7 +90,7 @@ class DompetController extends Controller
         $id = $request->get('id');
         
 
-        DB::table('tbl_dompet')->where('id', '=', $id)->delete();
+        DB::table('tbl_kategori')->where('id', '=', $id)->delete();
 
         $metacode = [
             "code" => 200,
