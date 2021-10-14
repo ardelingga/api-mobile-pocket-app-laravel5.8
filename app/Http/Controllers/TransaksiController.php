@@ -19,10 +19,13 @@ class TransaksiController extends Controller
         $status_transaksi = Input::get('status_transaksi');
         $status = Input::get('status');
         
+        // STATUS TRANSAKSI 
+        // 1 => DOMPET MASUK
+        // 2 => DOMPET KELUAR
         
         $transaksi = null;
 
-        if($status_transaksi == 0){
+        if($status_transaksi == 1){
             if($status == 0){
                 $transaksi = DB::table('tbl_transaksi')
                     ->join('tbl_transaksi_status', 'tbl_transaksi.transaksi_status_id', '=', 'tbl_transaksi_status.id')
@@ -41,7 +44,8 @@ class TransaksiController extends Controller
                     ->select('tbl_transaksi.*', 'tbl_transaksi_status.nama AS transaksi_status_name', 'tbl_dompet.nama AS dompet_name', 'tbl_kategori.nama AS kategori_name', 'tbl_dompet_status.nama AS status_name')
                     ->get();
             }
-        }else if($status_transaksi == 1 || $status_transaksi == 2){
+        }else if($status_transaksi == 2){
+            $transaksi_keluar_id = 2;
             if($status == 0){
                 $transaksi = DB::table('tbl_transaksi')
                     ->join('tbl_transaksi_status', 'tbl_transaksi.transaksi_status_id', '=', 'tbl_transaksi_status.id')
@@ -49,7 +53,7 @@ class TransaksiController extends Controller
                     ->join('tbl_kategori', 'tbl_transaksi.kategori_id', '=', 'tbl_kategori.id')
                     ->join('tbl_dompet_status', 'tbl_transaksi.status_id', '=', 'tbl_dompet_status.id')
                     ->select('tbl_transaksi.*', 'tbl_transaksi_status.nama AS transaksi_status_name', 'tbl_dompet.nama AS dompet_name', 'tbl_kategori.nama AS kategori_name', 'tbl_dompet_status.nama AS status_name')
-                    ->where('tbl_transaksi.transaksi_status_id', '=', $status_transaksi)
+                    ->where('tbl_transaksi.transaksi_status_id', '=', $transaksi_keluar_id)
                     ->get();
             }else if($status == 1 || $status == 2){
                 $transaksi = DB::table('tbl_transaksi')
@@ -57,7 +61,7 @@ class TransaksiController extends Controller
                     ->join('tbl_dompet', 'tbl_transaksi.dompet_id', '=', 'tbl_dompet.id')
                     ->join('tbl_kategori', 'tbl_transaksi.kategori_id', '=', 'tbl_kategori.id')
                     ->join('tbl_dompet_status', 'tbl_transaksi.status_id', '=', 'tbl_dompet_status.id')
-                    ->where('tbl_transaksi.transaksi_status_id', '=', $status_transaksi)
+                    ->where('tbl_transaksi.transaksi_status_id', '=', $transaksi_keluar_id)
                     ->where('tbl_transaksi.status_id', '=', $status)
                     ->select('tbl_transaksi.*', 'tbl_transaksi_status.nama AS transaksi_status_name', 'tbl_dompet.nama AS dompet_name', 'tbl_kategori.nama AS kategori_name', 'tbl_dompet_status.nama AS status_name')
                     ->get();
