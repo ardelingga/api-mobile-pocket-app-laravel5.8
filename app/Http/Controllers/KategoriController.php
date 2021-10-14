@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class KategoriController extends Controller
 {
@@ -14,11 +15,21 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        
-        $kategori = DB::table('tbl_kategori')
-                // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
-                ->select('*')
+        $status = Input::get('status');
+
+        $kategori = null;
+        if($status == 0){
+            $kategori = DB::table('tbl_kategori')
+                ->join('tbl_kategori_status', 'tbl_kategori.status_id', '=', 'tbl_kategori_status.id')
+                ->select('tbl_kategori.*', 'tbl_kategori_status.nama AS status_name')
                 ->get();
+        }else if($status == 1 || $status == 2){
+            $kategori = DB::table('tbl_kategori')
+                ->join('tbl_kategori_status', 'tbl_kategori.status_id', '=', 'tbl_kategori_status.id')
+                ->where('tbl_kategori.status_id', '=', $status)
+                ->select('tbl_kategori.*', 'tbl_kategori_status.nama AS status_name')
+                ->get();
+        }
 
         $metacode = [
             "code" => 200,

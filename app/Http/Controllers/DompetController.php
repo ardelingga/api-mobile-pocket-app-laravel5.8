@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Input;
 
 class DompetController extends Controller
 {
@@ -14,15 +15,22 @@ class DompetController extends Controller
      */
     public function index()
     {
-        $data = [
-            "id" => 1,
-            "nama" => "Ardelingga",
-        ];
+        $status = Input::get('status');
+
         
-        $dompet = DB::table('tbl_dompet')
-                // ->join('tbl_menu_users', 'tbl_submenu_users.menu_id', '=', 'tbl_menu_users.id')
-                ->select('*')
+        $dompet = null;
+        if($status == 0){
+            $dompet = DB::table('tbl_dompet')
+                ->join('tbl_dompet_status', 'tbl_dompet.status_id', '=', 'tbl_dompet_status.id')
+                ->select('tbl_dompet.*', 'tbl_dompet_status.nama AS status_name')
                 ->get();
+        }else if($status == 1 || $status == 2){
+            $dompet = DB::table('tbl_dompet')
+                ->join('tbl_dompet_status', 'tbl_dompet.status_id', '=', 'tbl_dompet_status.id')
+                ->where('tbl_dompet.status_id', '=', $status)
+                ->select('tbl_dompet.*', 'tbl_dompet_status.nama AS status_name')
+                ->get();
+        }
 
         $metacode = [
             "code" => 200,

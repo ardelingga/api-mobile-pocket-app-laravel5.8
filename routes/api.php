@@ -29,6 +29,7 @@ Route::get('/status_kategori', 'KategoriStatusController@index');
 
 Route::get('/list_transaksi', 'TransaksiController@index');
 Route::post('/add_transaksi', 'TransaksiController@add');
+Route::post('/id_generator', 'TransaksiController@idGenerator');
 Route::post('/edit_transaksi', 'TransaksiController@edit');
 Route::post('/delete_transaksi', 'TransaksiController@delete');
 
